@@ -1,0 +1,8 @@
+- name: Installing CentOS dependences...
+  ansible.builtin.yum:
+    name: epel-release
+    state: present
+- name: Setting CentOS variables...
+  set_fact:
+    cron_package_name: 'cronie'
+    cron_service_name: 'crond'

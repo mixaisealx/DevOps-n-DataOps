@@ -1,0 +1,5 @@
+- name: Initialize dedicated machines
+  hosts: all
+  become: yes
+  roles:
+    - server_setup

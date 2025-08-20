@@ -1,0 +1,3 @@
+Flask==2.3.2
+uWSGI==2.0.22
+flask-mysql==1.5.2

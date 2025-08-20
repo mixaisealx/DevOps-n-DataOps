@@ -1,0 +1,6 @@
+---
+service_state_jq:
+  stdout: '0'
+
+cron_package_name: 'cron'
+cron_service_name: 'cron'

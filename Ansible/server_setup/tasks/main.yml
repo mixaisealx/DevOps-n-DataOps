@@ -1,0 +1,51 @@
+- include_tasks: prepare_centos.yml
+  when: 
+    - ansible_os_family == "RedHat"
+- include_tasks: prepare_arch.yml
+  when: 
+    - ansible_os_family == "Archlinux"
+- include_vars:
+    file: files/service_state.json
+    name: service_state_local
+- name: Install nginx+cron+jq...
+  ansible.builtin.package:
+    name:
+      - nginx
+      - "{{ cron_package_name }}"
+      - jq
+    state: present
+- name: Copying nginx config...
+  ansible.builtin.copy:
+    src: deploy_nginx.conf
+    dest: /etc/nginx/nginx.conf
+  notify: restarting nginx
+- block:
+    - name: Trying to read service_state value...
+      ansible.builtin.shell: "jq -r .title /opt/service_state.json"
+      ignore_errors: yes
+      register: service_state_jq
+      check_mode: false
+      changed_when: false
+      ignore_errors: yes
+- name: Copying service_state...
+  ansible.builtin.copy:
+    src: service_state.json
+    dest: /opt/service_state.json
+  when: service_state_jq.stdout != service_state_local.title
+  notify: restarting nginx
+- name: Nginx service setup...
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+- name: Cron service setup...
+  ansible.builtin.service:
+    name: "{{ cron_service_name }}"
+    state: started
+    enabled: yes
+- name: Configuring cron...
+  ansible.builtin.cron:
+    state: present
+    user: root
+    name: "Update service_state"
+    job: "echo \"$(jq \".uptime = $(($(ps -o etimes= -p $(cat /var/run/nginx.pid)) / 60))\" /opt/service_state.json)\" > /opt/service_state.json"

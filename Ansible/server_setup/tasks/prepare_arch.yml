@@ -1,0 +1,4 @@
+- name: Setting ArchLinux variables...
+  set_fact:
+    cron_package_name: 'cronie'
+    cron_service_name: 'cronie'

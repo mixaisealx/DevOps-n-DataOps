@@ -1,0 +1,26 @@
+ADD JAR /opt/cloudera/parcels/CDH/lib/hive/lib/hive-contrib.jar;
+ADD JAR /opt/cloudera/parcels/CDH/lib/hive/lib/json-serde-1.3.8-jar-with-dependencies.jar;
+
+SET hive.exec.dynamic.partition.mode=nonstrict;
+
+USE mixaisealx;
+
+DROP TABLE IF EXISTS mixaisealx.kktrans;
+
+CREATE EXTERNAL TABLE mixaisealx.kktrans (
+    documentId INT,
+    `_id` MAP<STRING,STRING>,
+    ofdId STRING,
+    kktRegId STRING,
+    fsId STRING,
+    receiveDate MAP<STRING,BIGINT>,
+    subtype STRING,
+    protocolVersion STRING,
+    protocolSubversion INT,
+    content STRUCT<fiscalDriveNumber:STRING, operationType:INT, requestNumber:INT, modifiers:STRING, nds18:INT, nds10:INT, operator:STRING, items:STRING, cashTotalSum:INT, fiscalSign:BIGINT, kktRegId:STRING, user:STRING, ecashTotalSum:INT, userInn:STRING, fiscalDocumentNumber:INT, totalSum:INT, receiptCode:INT, taxationType:STRING, shiftNumber:INT, dateTime:MAP<STRING,BIGINT>, rawData:STRING>
+)
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+WITH SERDEPROPERTIES ("ignore.malformed.json" = "true")
+STORED AS TEXTFILE
+LOCATION '/data/hive/fns2'
+

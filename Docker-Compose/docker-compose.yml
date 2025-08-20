@@ -1,0 +1,69 @@
+version: "3"
+
+services:
+  db:
+    image: "public.ecr.aws/docker/library/mariadb:latest"
+    container_name: db
+    command: /bin/sh -c "eval \"echo \\\"$$(cat /tmp/init.sql)\\\"\" > /docker-entrypoint-initdb.d/init.sql && docker-entrypoint.sh --default-authentication-plugin=mysql_native_password"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_USER_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - DB_CUSTOM_TABLE_NAME=${DB_TABLE_NAME}
+    networks:
+      - doc_net
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/init.sql:/tmp/init.sql:ro
+  
+  filler:
+    build: filler/
+    container_name: filler
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_USER_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - DB_CUSTOM_TABLE_NAME=${DB_TABLE_NAME}
+    networks:
+      - doc_net
+    volumes:
+      - ./data.csv:/tmp/data.csv:ro
+
+  web:
+    build: web/
+    container_name: web
+    depends_on:
+      db:
+        condition: service_healthy
+      filler:
+        condition: service_started
+    environment:
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_USER_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - DB_CUSTOM_TABLE_NAME=${DB_TABLE_NAME}
+    networks:
+      - doc_net
+    ports:
+      - 8000:8000
+
+networks:
+  doc_net:
+    name: doc_net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.16.0/29"
+          gateway: "172.16.16.1"
+
