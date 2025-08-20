@@ -1,5 +1,7 @@
 # DevOps, DataOps & Networking
 
+[![License](https://img.shields.io/badge/LICENSE-Apache%202.0-green?style=flat)](/LICENSE)  [![Version](https://img.shields.io/badge/VERSION-RELEASE%201.0-green?style=flat)](https://github.com/mixaisealx/DevOps-n-DataOps)
+
 This repository is a collection of projects and demos across different technologies: **Ansible, Docker, Hive, Spark, Hadoop, Kafka, HBase, Networking, and Jupyter**.  
 Each project lives in its own folder with a dedicated `README.md` containing detailed setup and usage instructions.
 
