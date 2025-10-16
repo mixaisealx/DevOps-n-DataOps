@@ -12,6 +12,7 @@ Each project lives in its own folder with a dedicated `README.md` containing det
 | [Ansible](./Ansible) | **Ansible Role: Nginx + Service State Cron** | Installs `nginx` and a cron job that maintains `service_state`. Idempotent, OS-aware (CentOS, RHEL, Arch, Debian, Ubuntu). |
 | [Apache-Hive](./Apache-Hive) | **Hive Transactions Analysis** | Hive SQL tasks on transactions: format comparison (TEXT/ORC/PARQUET), profit analysis, shift violations. |
 | [Apache-Spark](./Apache-Spark) | **Spark Solutions** | BFS shortest path, collocations (NPMI), streaming user segmentation, and common friends analysis. Implemented with RDD, DataFrames, and Streaming. |
+| [Crypto-Algorithms](./Crypto-Algorithms) | **Cryptography Algorithms** | Collection of classical ciphers implementations: generalized Vigenère, double permutation, gamma (stream) cipher, and analytic (matrix) transform. |
 | [Docker-Compose](./Docker-Compose) | **Dockerized Web + DB Pipeline** | MariaDB database + filler service (CSV loader) + web app with `/health` and `/` endpoints. |
 | [Hadoop-MapReduce](./Hadoop-MapReduce) | **MapReduce Jobs** | Hadoop streaming tasks: Wikipedia proper-name frequency and system log error analysis. |
 | [Kafka](./Kafka) | **Kafka & Spark Streaming Segmentation** | Parses user agents and streams counts to Kafka topics. |
@@ -37,6 +38,7 @@ Each project can be explored individually by entering its folder and following t
 - Streaming -> **Kafka, Spark Streaming**
 - NoSQL -> **HBase (with Spark + HappyBase)**
 - Networking -> **Custom UDP protocol, MitM attack**
+- Classical Cryptography -> **Vigenere, Double Permutation, Gamming (stream), Matrix Transform**
 - Productivity tools -> **Jupyter Notebook manager with Tmux + venv**
 
 
