@@ -18,9 +18,7 @@ The cipher constructs a **square transformation matrix** from the key and uses i
 
 1. Ensure the key length is a perfect square, i.e. $|K| = m^2$.
 2. Map each alphabet symbol to an integer starting from 1:
-   $$
-   A = {a_1, a_2, \ldots, a_{|A|}}, \quad map(a_i) = i
-   $$
+   $A = {a_1, a_2, \ldots, a_{|A|}}, \quad map(a_i) = i$
 3. Form a square matrix $M$ of size $m \times m$ by filling it row-wise with values $map(K_i)$.
 4. Verify that the matrix determinant $\det(M)$ is nonzero (so that $M$ is invertible).
 5. Divide the plaintext into blocks of length $m$. For the last block, if its length is less than $m$, pad it with random symbols from $A$.
